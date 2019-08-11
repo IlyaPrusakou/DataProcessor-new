@@ -1,0 +1,38 @@
+ <offers>
+  <offer id="1004541" available="true">
+   <price>65.01</price>
+   <availableText>в наличии</availableText>
+   <categoryId>11</categoryId>
+   <name>Молнии Спираль н/р потайная т.3 &quot;BLITZ&quot;   G013P   30 см  пластик   10 шт №292 коричневый</name>
+   <unitName>Упаковка</unitName>
+   <koef>10</koef>
+   <barcodes>
+       <barcode type="opt">4680269514102</barcode>
+       <barcode type="producer">4606080834373</barcode>
+   </barcodes>
+   <bigoptPart>true</bigoptPart>
+   <mrrc>48</mrrc>
+   <imagelist>http://images.firma-gamma.ru/images/5/3/g2465297952.jpg</imagelist>
+   <articul>G013P</articul>
+   <brand>&quot;BLITZ&quot;</brand>
+  </offer>
+  <offer id="1220451" available="true">
+   <price>53.94</price>
+   <availableText>в наличии</availableText>
+   <categoryId>11</categoryId>
+   <name>Молнии Спираль н/р потайная т.3 &quot;BLITZ&quot;   G013P   20 см  пластик    10 шт №279 коричневый</name>
+   <unitName>Упаковка</unitName>
+   <koef>10</koef>
+   <barcodes>
+       <barcode type="opt">4680269513013</barcode>
+       <barcode type="producer">4606080836124</barcode>
+   </barcodes>
+   <bigoptPart>true</bigoptPart>
+   <mrrc>40</mrrc>
+   <imagelist>http://images.firma-gamma.ru/images/f/9/g2465186112.jpg</imagelist>
+   <articul>G013P</articul>
+   <brand>&quot;BLITZ&quot;</brand>
+  </offer>
+ </offers>
+ 
+ 
