@@ -13,6 +13,20 @@ namespace sorter
     {
         static void Main(string[] args)
         {
+            string g = "G3051 100 см Тип 5 10 шт р/м - \\_ЧЕРНЫЙ";
+            string[] sep = new string[] { " - " };
+            string[] res = g.Split(sep, StringSplitOptions.None);
+            foreach (string f in res)
+            {
+                Console.WriteLine(f);
+            }
+            
+
+
+
+
+
+
             string pathToCategories = "";
             string result = "";
             IdStore store = new IdStore();
@@ -57,33 +71,10 @@ namespace sorter
 
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            string path2 = @"D:\c# excel\solution\sorterNew-master\yml\full.yml";
+            //string path2 = @"D:\c# excel\solution\sorterNew-master\yml\full.yml";
             //IdStore store = new IdStore();
-            string path3 = @"D:\c# excel\solution\sorterNew-master\yml\fullcatalog.yml";
-            store.ExtractIdData(path3);
+            //string path3 = @"D:\c# excel\solution\sorterNew-master\yml\fullcatalog.yml";
+           // store.ExtractIdData(path3);
             //FileInfo categoryfile = new FileInfo(@"D:\c# excel\solution\sorterNew-master\yml\categoryfile.xlsx");
             //store.CreateListOfCategoriesPath(categoryfile);
             
@@ -95,9 +86,9 @@ namespace sorter
             //extr.GetAggregateName(@"D:\c# excel\solution\sorterNew-master\yml\newfull.xlsx"); // было savetry.xlsx
             //extr.GetCategories();
             //ExcelManipulator creator = new ExcelManipulator(extr.Offers);
-            string MyFile = @"D:\c# excel\target.xlsx";
+            //string MyFile = @"D:\c# excel\target.xlsx";
            // creator.SaveToExcellForJoomla(MyFile);
-            Console.WriteLine("end");
+            //Console.WriteLine("end");
             Console.ReadLine();
         }
     }

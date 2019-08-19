@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barcode.cs" />
+    <Compile Include="BillData.cs" />
+    <Compile Include="BillPositionName.cs" />
     <Compile Include="class.cs" />
     <Compile Include="Description.cs" />
     <Compile Include="EncodingConverter.cs" />

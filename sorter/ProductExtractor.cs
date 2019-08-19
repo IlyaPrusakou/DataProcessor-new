@@ -67,21 +67,18 @@ namespace sorter
                         }
                         else if (range[i, 1].Value == null)
                         {
-                            //IdNamePair.Add(i, range[i, 4].GetValue<string>());
                             string errormessage = $"row {i}, keynull, GetAggregateName";
                             Log.Add(errormessage);
                         }
                         else if (range[i, 4].Value == null)
                         {
                             decimal key = RemoveAndConvertKey(range[i, 1].Value.ToString());
-                            //IdNamePair.Add(key, $"nullName {i}");
                             string errormessage2 = $"row {i}, {key}, nullname, GetAggregateName";
                             Log.Add(errormessage2);
                         }
                     }
                     catch (Exception ex)
                     {
-                        //Console.WriteLine(ex.Message + "  " + i);
                         string errormessage3 = $"row {i}, {ex.Message}, GetAggregateName";
                         Log.Add(errormessage3);
                     }
