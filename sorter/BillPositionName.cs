@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace sorter
 {
+    [Serializable]
     public class BillPositionName
     {
         public string FullName { get; set; }
@@ -19,6 +20,7 @@ namespace sorter
 
         public BillPositionName(string fullname)
         {
+            FullName = fullname;
             List<string> names = DevideFullname(fullname);
             if (names.Count == 2)
             {

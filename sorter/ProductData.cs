@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sorter.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace sorter
 {
     [Serializable]
     [XmlInclude(typeof(Barcode))]
-    public class offer
+    public class offer: IProduct
     {
         [XmlElement("categoryId")]
         public string CategoryId { get; set; } //use ProductExtractor.Extract(string filepath)

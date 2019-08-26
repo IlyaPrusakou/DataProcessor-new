@@ -1,7 +1,14 @@
-﻿using System;
+﻿using ICSharpCode.Decompiler;
+using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.TypeSystem;
+using sorter.Controllers;
+using sorter.Interfaces;
+using sorter.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -11,16 +18,16 @@ namespace sorter
 {
     class Program
     {
+       
         static void Main(string[] args)
         {
-            string g = "G3051 100 см Тип 5 10 шт р/м - \\_ЧЕРНЫЙ";
-            string[] sep = new string[] { " - " };
-            string[] res = g.Split(sep, StringSplitOptions.None);
-            foreach (string f in res)
-            {
-                Console.WriteLine(f);
-            }
-            
+            FurcomModel fur = new FurcomModel(@"D:\FurcomBase.xml");
+            GammaModel gam = new GammaModel(@"D:\testbig.yml");
+            PriceCheckerController controller = new PriceCheckerController(fur, gam);
+            Console.WriteLine("Введите путь к счету"); 
+            string filepath = Console.ReadLine();
+            controller.MakeTheCheckedBill(@filepath);
+
 
 
 
