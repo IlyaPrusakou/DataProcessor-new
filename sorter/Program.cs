@@ -6,10 +6,12 @@ using sorter.Interfaces;
 using sorter.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -21,6 +23,30 @@ namespace sorter
        
         static void Main(string[] args)
         {
+            CultureInfo cur2 = CultureInfo.CurrentCulture;
+            CultureInfo targ = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = targ;
+            CultureInfo.DefaultThreadCurrentUICulture = targ;
+            Thread.CurrentThread.CurrentCulture = targ;
+            Thread.CurrentThread.CurrentUICulture = targ;
+
+            CultureInfo cur = CultureInfo.CurrentCulture;
+
+            Console.WriteLine($"cur.DisplayName----{cur.DisplayName}");
+            Console.WriteLine($"cur.EnglishName----{cur.EnglishName}");
+            Console.WriteLine($"cur.Name----{cur.Name}");
+            Console.WriteLine($"cur.NativeName----{cur.NativeName}");
+            Console.WriteLine("CurrencyDecimalDigits----" + cur.NumberFormat.CurrencyDecimalDigits);
+            Console.WriteLine("CurrencyDecimalSeparator----" + cur.NumberFormat.CurrencyDecimalSeparator);
+            Console.WriteLine("NumberDecimalDigits----" + cur.NumberFormat.NumberDecimalDigits);
+            Console.WriteLine("NumberFormat.NumberDecimalSeparator----" + cur.NumberFormat.NumberDecimalSeparator);
+            Console.WriteLine("PercentDecimalDigits----" + cur.NumberFormat.PercentDecimalDigits);
+            Console.WriteLine("PercentDecimalSeparator----" + cur.NumberFormat.PercentDecimalSeparator);
+            Console.WriteLine("-----  .   --------");
+
+
+
+
             FurcomModel fur = new FurcomModel(@"D:\FurcomBase.xml");
             GammaModel gam = new GammaModel(@"D:\testbig.yml");
             PriceCheckerController controller = new PriceCheckerController(fur, gam);

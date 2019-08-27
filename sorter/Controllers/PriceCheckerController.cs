@@ -3,6 +3,7 @@ using sorter.Interfaces;
 using sorter.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace sorter.Controllers
     public class PriceCheckerController
     {
         private List<BillData> bills;
-
+        private string separator;
 
         public IFurcomModel FurcomMod {get; private set;}
         public IGammaModel GammaMod { get; private set; }
@@ -24,20 +25,18 @@ namespace sorter.Controllers
         {
             FurcomMod = furmod;
             GammaMod = gammod;
-
+            separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
         }
         //Action
-        public void MakeTheCheckedBill(string path)
+        public void MakeTheCheckedBill(string path, string course)
         {
             DeepCopier copier = new DeepCopier();
             GetDataFromBill(path);
             GammaMod.GetAll();
-
             foreach (var billposition in bills) 
             {
                 FurcomMod.GetByName(billposition.Name.GeneralName);
-            
                 FurcomIdReceiver IdReceiver = new FurcomIdReceiver();
                 FurcomModel loc = (FurcomModel)FurcomMod;
                 string id = IdReceiver.GetIdFromFurcomProductDescr(loc.SelectedData[0].Description);
@@ -45,9 +44,9 @@ namespace sorter.Controllers
                 GammaModel loc2 = (GammaModel)GammaMod;
                 GetterFromGamma.FindOfferInGammaBase(id, loc2.SelectedData);
                 offer result = GetterFromGamma.FoundOffer;
-
                 BillData newbilldata = copier.DeepClone<BillData>(billposition); //  это надо проверить
-                newbilldata.Price = result.Price; // convert to decimal
+                decimal targetprice = ConvertRURintoBYN(course, result.Price);
+                ChangeBillDataAmounts(newbilldata, targetprice);
                 OutputBills.Add(newbilldata);
             }
             // private void PrintOutputBillsToExcellBill();
@@ -104,6 +103,59 @@ namespace sorter.Controllers
                     }
                 }
             }
+        }
+
+        private decimal ConvertRURintoBYN(string course, string baseamount)
+        {
+            
+            decimal result = 0;
+            string workamount = null;
+            string workcourse = null;
+            if (separator == ",")
+            {
+                workamount = baseamount.Replace(".", ",");
+                workcourse = course.Replace(".", ",");
+            }
+            else if (separator == ".")
+            {
+                workamount = baseamount.Replace(",", ".");
+                workcourse = course.Replace(",", ".");
+            }
+            result = Convert.ToDecimal(workamount) * Convert.ToDecimal(course);
+
+            return result;
+        }
+
+        private void ChangeBillDataAmounts(BillData data, decimal baseprice)
+        {
+            decimal newprice = baseprice * Convert.ToDecimal(1.5);
+            decimal newAmount = newprice * Convert.ToDecimal(data.Quantity);
+            decimal newVatPercent = Convert.ToDecimal(data.VatPercent.Replace("%", "")) / 100;
+            decimal newAmountOfVat = newAmount * newVatPercent;
+            decimal newTotalamount = newAmount + newAmountOfVat;
+            string resprice = null;
+            string resAmount = null;
+            string resAmountOfVat = null;
+            string resTotalamount = null;
+
+            if (separator == ",")
+            {
+                resprice = Convert.ToString(newprice).Replace(".", ",");
+                resAmount = Convert.ToString(newAmount).Replace(".", ","); ;
+                resAmountOfVat = Convert.ToString(newAmountOfVat).Replace(".", ","); ;
+                resTotalamount = Convert.ToString(newTotalamount).Replace(".", ","); ;
+            }
+            else if (separator == ".")
+            {
+                resprice = Convert.ToString(newprice).Replace(",", ".");
+                resAmount = Convert.ToString(newAmount).Replace(",", "."); ;
+                resAmountOfVat = Convert.ToString(newAmountOfVat).Replace(",", "."); ;
+                resTotalamount = Convert.ToString(newTotalamount).Replace(",", "."); ;
+            }
+            data.Price = resprice;
+            data.Amount = resAmount;
+            data.AmountOfVat = resAmountOfVat;
+            data.TotalAmount = resTotalamount;
         }
     }
 }
