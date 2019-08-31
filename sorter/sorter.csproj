@@ -81,6 +81,8 @@
     <Compile Include="Interfaces\IFurcomModel.cs" />
     <Compile Include="Interfaces\IGammaModel.cs" />
     <Compile Include="Interfaces\IProduct.cs" />
+    <Compile Include="Models\RareMutableData.cs" />
+    <Compile Include="Utils\BillFormer.cs" />
     <Compile Include="Utils\CheckerGammaList.cs" />
     <Compile Include="Utils\DeepCopier.cs" />
     <Compile Include="Utils\FurcomIdReceiver.cs" />

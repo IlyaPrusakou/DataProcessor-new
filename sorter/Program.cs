@@ -23,36 +23,17 @@ namespace sorter
        
         static void Main(string[] args)
         {
-            CultureInfo cur2 = CultureInfo.CurrentCulture;
-            CultureInfo targ = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentCulture = targ;
-            CultureInfo.DefaultThreadCurrentUICulture = targ;
-            Thread.CurrentThread.CurrentCulture = targ;
-            Thread.CurrentThread.CurrentUICulture = targ;
 
-            CultureInfo cur = CultureInfo.CurrentCulture;
-
-            Console.WriteLine($"cur.DisplayName----{cur.DisplayName}");
-            Console.WriteLine($"cur.EnglishName----{cur.EnglishName}");
-            Console.WriteLine($"cur.Name----{cur.Name}");
-            Console.WriteLine($"cur.NativeName----{cur.NativeName}");
-            Console.WriteLine("CurrencyDecimalDigits----" + cur.NumberFormat.CurrencyDecimalDigits);
-            Console.WriteLine("CurrencyDecimalSeparator----" + cur.NumberFormat.CurrencyDecimalSeparator);
-            Console.WriteLine("NumberDecimalDigits----" + cur.NumberFormat.NumberDecimalDigits);
-            Console.WriteLine("NumberFormat.NumberDecimalSeparator----" + cur.NumberFormat.NumberDecimalSeparator);
-            Console.WriteLine("PercentDecimalDigits----" + cur.NumberFormat.PercentDecimalDigits);
-            Console.WriteLine("PercentDecimalSeparator----" + cur.NumberFormat.PercentDecimalSeparator);
-            Console.WriteLine("-----  .   --------");
-
-
-
-
+            string course = "0,033";
+            
             FurcomModel fur = new FurcomModel(@"D:\FurcomBase.xml");
             GammaModel gam = new GammaModel(@"D:\testbig.yml");
             PriceCheckerController controller = new PriceCheckerController(fur, gam);
             Console.WriteLine("Введите путь к счету"); 
             string filepath = Console.ReadLine();
-            controller.MakeTheCheckedBill(@filepath);
+            Console.WriteLine("Введите пeть куда сохранить счет");
+            string pathtosave = Console.ReadLine();
+            controller.MakeTheCheckedBill(@filepath, course, @pathtosave);
 
 
 

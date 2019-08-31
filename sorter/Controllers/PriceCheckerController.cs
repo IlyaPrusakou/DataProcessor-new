@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using sorter.Interfaces;
+using sorter.Models;
 using sorter.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace sorter.Controllers
         public IFurcomModel FurcomMod {get; private set;}
         public IGammaModel GammaMod { get; private set; }
         public List<BillData> OutputBills { get; set; }
+        public RareMutableData Raredata { get; set; }
 
 
         public PriceCheckerController(IFurcomModel furmod, IGammaModel gammod)
@@ -26,10 +28,10 @@ namespace sorter.Controllers
             FurcomMod = furmod;
             GammaMod = gammod;
             separator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-
+            OutputBills = new List<BillData>();
         }
         //Action
-        public void MakeTheCheckedBill(string path, string course)
+        public void MakeTheCheckedBill(string path, string course, string pathtosave)
         {
             DeepCopier copier = new DeepCopier();
             GetDataFromBill(path);
@@ -49,7 +51,9 @@ namespace sorter.Controllers
                 ChangeBillDataAmounts(newbilldata, targetprice);
                 OutputBills.Add(newbilldata);
             }
-            // private void PrintOutputBillsToExcellBill();
+            BillFormer former = new BillFormer();
+            former.FormBill(pathtosave, OutputBills, Raredata);
+            
 
         }
         private void GetDataFromBill(string path)
@@ -60,12 +64,25 @@ namespace sorter.Controllers
             bool endflag = false;
             bills = new List<BillData>();
             FileInfo file = new FileInfo(path);
+            Raredata = new RareMutableData();
             using (ExcelPackage exc = new ExcelPackage(file))
             {
                 ExcelWorksheet worksheet = exc.Workbook.Worksheets[1];
                 ExcelRange Dimension = worksheet.Cells;
                 for (int i = 1; i < Dimension.End.Row; i++)
                 {
+                    if (worksheet.Cells[i, 1].Value.ToString() == "Продавец:")
+                    {
+                        Raredata.User = worksheet.Cells[i, 3].Value.ToString();
+                    }
+                    else if (worksheet.Cells[i, 1].Value.ToString().Contains("Пред-счет"))
+                    {
+                        Raredata.Date = worksheet.Cells[i, 1].Value.ToString().Replace("Пред-счет №б/н от ","").Replace(" года", "").Trim();
+                    }
+                    else if (worksheet.Cells[i, 1].Value.ToString() == "Покупатель:")
+                    {
+                        Raredata.Buyer = worksheet.Cells[i, 3].Value.ToString();
+                    }
                     if (worksheet.Cells[i, 1].Value.ToString() == "№")
                     {
                         beginrow = i;
@@ -130,7 +147,7 @@ namespace sorter.Controllers
         {
             decimal newprice = baseprice * Convert.ToDecimal(1.5);
             decimal newAmount = newprice * Convert.ToDecimal(data.Quantity);
-            decimal newVatPercent = Convert.ToDecimal(data.VatPercent.Replace("%", "")) / 100;
+            decimal newVatPercent = Convert.ToDecimal(data.VatPercent.Replace("%", "")); // надо перепроверить тут строка "0.2"!!
             decimal newAmountOfVat = newAmount * newVatPercent;
             decimal newTotalamount = newAmount + newAmountOfVat;
             string resprice = null;
@@ -155,7 +172,7 @@ namespace sorter.Controllers
             data.Price = resprice;
             data.Amount = resAmount;
             data.AmountOfVat = resAmountOfVat;
-            data.TotalAmount = resTotalamount;
+            data.TotalAmount = resTotalamount; // надо провести округления !!!!
         }
     }
 }
